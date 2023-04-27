@@ -27,6 +27,11 @@ const Productcolumns = [
     headerName: "Product Link ",
     flex: 2,
   },
+  {
+    field: "Price_History",
+    headerName: "Price History",
+    flex: 2,
+  },
 ];
 
 export { Productcolumns };
