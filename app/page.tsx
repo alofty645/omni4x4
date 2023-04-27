@@ -13,7 +13,6 @@ export default function Home() {
   async function getProducts() {
     let { data: product } = await supabase.from("4wdsupacentre").select("*");
     setProducts(product);
-    console.log(product);
   }
 
   useEffect(() => {
@@ -25,12 +24,18 @@ export default function Home() {
       className="
          m-4  h-3/4 rounded-3xl"
     >
+      <h1 className="text-5xl m-10 text-center">
+        PRICE TRACKER FOR 4WD SUPACENTRE
+      </h1>
       <Box
         height="80vh"
         sx={{
           ...Gridsettings,
         }}
       >
+        {/* <div className="p-5">
+          <SearchBar />
+        </div> */}
         <DataGrid
           checkboxSelection
           rows={products}
