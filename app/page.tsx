@@ -32,7 +32,7 @@ export default function Home() {
           issues or ideas for new features please contact me omni4x4@gmail.com
         </h2>
         <h2 className="m-3">
-          To search the table, click the "filters" button below and choose which
+          To search the table, click the filters button below and choose which
           column you would like to filter by
         </h2>
       </div>
