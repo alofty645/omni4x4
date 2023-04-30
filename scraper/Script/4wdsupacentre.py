@@ -43,7 +43,7 @@ else:
 
 # Opening the CSV File to write data in it
 with open('4wdsupacentre.csv', 'w', newline='', encoding="utf-8-sig") as csvfile: 
-   fieldnames = ["Product Link", "Product Name", "Product Price", "Shipping Price", "SKU"] # adjust fieldnames
+   fieldnames = ["Product Link", "Product Name", "Product Price", "Shipping Price"] # adjust fieldnames
    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
    writer.writeheader()
    
@@ -82,16 +82,16 @@ with open('4wdsupacentre.csv', 'w', newline='', encoding="utf-8-sig") as csvfile
 
 
          product_link = "https://www.4wdsupacentre.com.au" + product_link # Creating the product link
-         driver.get(product_link)
+         # driver.get(product_link)
 
          try:
-            WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.XPATH, '//meta[@itemprop="sku"]')))
+            # WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.XPATH, '//meta[@itemprop="sku"]')))
      
-            response = Selector(text=driver.page_source) # Converting the page source to a response object
+            # response = Selector(text=driver.page_source) # Converting the page source to a response object
 
-            sku = response.xpath('//meta[@itemprop="sku"]/@content').extract_first() # Scrapping SKU 
-            if sku:
-               sku = sku.strip()
+            # sku = response.xpath('//meta[@itemprop="sku"]/@content').extract_first() # Scrapping SKU 
+            # if sku:
+            #    sku = sku.strip()
 
             # # Printing data on console 
             # print("-------------------------------------------------------------------")
@@ -109,7 +109,7 @@ with open('4wdsupacentre.csv', 'w', newline='', encoding="utf-8-sig") as csvfile
                "Product Name": product_name,
                "Product Price": product_price,
                "Shipping Price": shipping_price,
-               "SKU": sku
+               # "SKU": sku
             })
          except:
             pass
