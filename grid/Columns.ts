@@ -2,28 +2,23 @@ const Productcolumns = [
   // { field: "id", headerName: "Product ID" },
   //{ field: "created_at", headerName: "Date" },
   {
-    field: "Product_Name",
+    field: "product_name",
     headerName: "Product Name",
     flex: 3,
   },
-  {
-    field: "SKU",
-    headerName: "SKU",
-    flex: 1,
-  },
 
   {
-    field: "Product_Price",
+    field: "product_price",
     headerName: "Product Price",
     cellClassName: "name-column--cell",
   },
 
   {
-    field: "Shipping_Price",
+    field: "shipping_price",
     headerName: "Shipping Price",
   },
   {
-    field: "Product_Link",
+    field: "product_link",
     headerName: "Product Link ",
     flex: 2,
   },
