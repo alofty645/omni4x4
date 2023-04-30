@@ -7,8 +7,13 @@ import csv
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from supabase import create_client, Client
 
+#create Supabase client
 
+url = "https://oekeyzwvxekuznfupkka.supabase.co"
+key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9la2V5end2eGVrdXpuZnVwa2thIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODI1OTAxMjgsImV4cCI6MTk5ODE2NjEyOH0.JYFSf-xymsOm0FlbN4XtFieFY9hD5PzCgYcbIJ6NogU"
+supabase: Client = create_client(url, key)
 
 # Setting up the driver
 chromeOptions = Options() # Setting up the chrome options
@@ -17,8 +22,6 @@ chromeOptions.add_argument("--headless") # Running the driver in headless mode
 chromePath = "chromedriver.exe" # Path to the chrome driver
 driver = webdriver.Chrome(executable_path = chromePath, options = chromeOptions) # Setting up the driver
 driver.maximize_window() # Maximizing the window
-
-
 
 
 driver.get("https://www.4wdsupacentre.com.au/products.html?page=1") # Opening the website
@@ -104,13 +107,17 @@ with open('4wdsupacentre.csv', 'w', newline='', encoding="utf-8-sig") as csvfile
             # print("-------------------------------------------------------------------")
 
             # Writing data to CSV File
-            writer.writerow({
-               "Product Link": product_link,
-               "Product Name": product_name,
-               "Product Price": product_price,
-               "Shipping Price": shipping_price,
-               # "SKU": sku
-            })
+            
+            product = supabase.table('product').upsert({'product_name': product_name, 'product_link': product_link}).execute()
+
+            price = supabase.table('price').insert({'product_price': product_price, 'shipping_price': shipping_price, 'product_link': product_link }).execute()
+            # writer.writerow({
+            #    "Product Link": product_link,
+            #    "Product Name": product_name,
+            #    "Product Price": product_price,
+            #    "Shipping Price": shipping_price,
+            #    # "SKU": sku
+            # })
          except:
             pass
       print("Pages Scraped: ", i)
