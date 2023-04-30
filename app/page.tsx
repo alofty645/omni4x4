@@ -6,12 +6,17 @@ import { useState, useEffect } from "react";
 import { Productcolumns } from "@/grid/Columns";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Gridsettings from "@/grid/Gridsettings";
+import { log } from "console";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
 
   async function getProducts() {
-    let { data: product } = await supabase.from("product").select("*");
+    let { data: product } = await supabase
+      .from("product")
+      .select(
+        "id, product_link, product_name, price (product_price, shipping_price)"
+      );
     setProducts(product);
   }
 
