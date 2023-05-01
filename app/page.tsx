@@ -14,7 +14,7 @@ export default function Home() {
     let { data: product }: any = await supabase
       .from("product")
       .select(
-        "id, product_link, product_name, price (product_price, shipping_price)"
+        "id, product_link, product_name, price (created_at, product_price, shipping_price)"
       );
     setProducts(product);
   }
