@@ -5,6 +5,7 @@ import supabase from "@/supabase/createclient";
 import { useState, useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Gridsettings from "@/grid/Gridsettings";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -123,6 +124,7 @@ export default function Home() {
       className="
          m-4  h-3/4 rounded-3xl"
     >
+      <Analytics />
       <div className="m-10 text-center">
         <h1 className="text-5xl m-3">PRICE TRACKER FOR 4WD SUPACENTRE</h1>
         <h2 className="m-3 border-black border-2">
