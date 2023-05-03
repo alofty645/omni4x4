@@ -25,59 +25,77 @@ export default function Home() {
 
   const productPrice = (product: any) => {
     const lastIndex = product.row.price.length - 1;
-    return product.row.price[lastIndex].product_price;
+    const modstring = product.row.price[lastIndex].product_price.substring(1);
+    const convertToFloat = parseFloat(modstring);
+    return <p>${modstring}</p>;
   };
 
   const shippingPrice = (product: any) => {
     const lastIndex = product.row.price.length - 1;
-    return product.row.price[lastIndex].shipping_price;
-  };
-
-  const lowestPrice = (product: any) => {
-    let lowest = Infinity;
-    for (let i = 0; i < product.row.price.length; i++) {
-      const productPrice =
-        parseFloat(product.row.price[i].product_price.substring(1)) || 0;
-      const shippingPrice =
-        parseFloat(product.row.price[i].shipping_price.substring(1)) || 0;
-      const price = productPrice + shippingPrice;
-      if (!isNaN(price) && price < lowest) {
-        lowest = price;
-      }
-    }
-    return (
-      <div>
-        <p className="font-bold">${lowest.toFixed(2)}</p>
-      </div>
-    );
+    const shippingPrice = product.row.price[lastIndex].shipping_price;
+    const modstring =
+      shippingPrice && shippingPrice !== "" ? shippingPrice.substring(1) : "0";
+    // const convertToFloat = parseFloat(modstring);
+    return <p>${modstring}</p>;
   };
 
   const productName = (product: any) => {
-    //const convertToString = JSON.stringify(product.row.product_name);
     return <a href={product.row.product_link}>{product.row.product_name}</a>;
   };
 
   const totalPrice = (product: any) => {
     const lastIndex = product.row.price.length - 1;
 
-    const modstringproduct =
-      product.row.price[lastIndex].product_price.substring(1);
-
     const shippingPrice = product.row.price[lastIndex].shipping_price;
-    const modstringshipping = shippingPrice ? shippingPrice.substring(1) : "0";
+    const productPrice = product.row.price[lastIndex].product_price;
+
+    let modstringproduct = productPrice ? productPrice.substring(1) : "0";
+    modstringproduct = modstringproduct.replace(",", "");
+
+    let modstringshipping = shippingPrice ? shippingPrice.substring(1) : "0";
+    modstringshipping = modstringshipping.replace(",", "");
 
     const productint = parseFloat(modstringproduct);
     const shippingint = parseFloat(modstringshipping);
     const total = productint + shippingint;
 
-    const formattedTotal =
-      total % 1 === 0
-        ? total.toFixed(2)
-        : total.toFixed(2).replace(/\.00$/, "");
+    const formattedTotal = total.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 
     return (
       <div>
-        <p className="font-bold">${formattedTotal}</p>
+        <p className="font-bold">{formattedTotal}</p>
+      </div>
+    );
+  };
+
+  const lowestPrice = (product: any) => {
+    let lowest = Infinity;
+    for (let i = 0; i < product.row.price.length; i++) {
+      const shippingPrice = product.row.price[i].shipping_price;
+      const productPrice = product.row.price[i].product_price;
+
+      let modstringproduct = productPrice ? productPrice.substring(1) : "0";
+      modstringproduct = modstringproduct.replace(",", "");
+
+      let modstringshipping = shippingPrice ? shippingPrice.substring(1) : "0";
+      modstringshipping = modstringshipping.replace(",", "");
+
+      const productint = parseFloat(modstringproduct);
+      const shippingint = parseFloat(modstringshipping);
+      const total = productint + shippingint;
+
+      if (!isNaN(total) && total < lowest) {
+        lowest = total;
+      }
+    }
+    return (
+      <div>
+        <p className="font-bold">${lowest.toFixed(2)}</p>
       </div>
     );
   };
@@ -95,19 +113,19 @@ export default function Home() {
     {
       field: "product_price",
       headerName: "Current Price",
-      valueGetter: productPrice,
+      renderCell: productPrice,
       flex: 1,
     },
 
     {
       field: "shipping_price",
-      headerName: "Shipping Price",
-      valueGetter: shippingPrice,
+      headerName: "Current Shipping Price",
+      renderCell: shippingPrice,
       flex: 1,
     },
     {
       field: "total_price",
-      headerName: "Total Price",
+      headerName: "Current Total Price",
       renderCell: totalPrice,
       flex: 1,
     },
@@ -127,15 +145,31 @@ export default function Home() {
       <Analytics />
       <div className="m-10 text-center">
         <h1 className="text-5xl m-3">PRICE TRACKER FOR 4WD SUPACENTRE</h1>
-        <h2 className="m-3 border-black border-2">
+        <h2 className="m-3">
           This a basic tool to help track the lowest prices seen at 4wd
           Supacentre. It is a work in progress and will evolve over time. If you
           have any issues or ideas for new features please email me
           omni4x4@gmail.com
+          <br />
+          <br />
+          <ul className=" border-black border-2">
+            Notes:
+            <li>- This has not been optimised for mobile.</li>
+            <li>
+              - The data is updated once per day, eventually this will be
+              automated and more frequent
+            </li>
+            <li>
+              - Shipping cost for large freight items are unvailable for web
+              scraping and are not included in the total price.
+            </li>
+          </ul>
         </h2>
+        <h1>How To:</h1>
         <h2 className="m-3">
           To search the table, click the filters button below and choose which
-          column you would like to filter by
+          column you would like to filter by. Clicking the product name will
+          take you to the listing.
         </h2>
       </div>
       <Box
